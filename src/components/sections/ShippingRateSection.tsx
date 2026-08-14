@@ -18,10 +18,14 @@ import {
   CheckSquare,
   Square,
   Info,
+  Lock,
 } from 'lucide-react';
 import type { ShippingRateItem, ShippingRateApiResponse } from '@/types/shipping';
 
 type WeightUnit = 'gram' | 'kg';
+
+const STORE_ORIGIN_POSTAL_CODE = '64171';
+const STORE_LOCATION_LABEL = 'Farm Molly Cantik (Kediri, Jawa Timur)';
 
 interface CourierOption {
   id: string; // 'jnt' | 'tiki'
@@ -52,7 +56,7 @@ const AVAILABLE_COURIERS: CourierOption[] = [
 ];
 
 export const ShippingRateSection: React.FC = () => {
-  const [originPostalCode, setOriginPostalCode] = useState('');
+  const [originPostalCode] = useState(STORE_ORIGIN_POSTAL_CODE);
   const [destinationPostalCode, setDestinationPostalCode] = useState('');
   const [weightInput, setWeightInput] = useState('1000');
   const [weightUnit, setWeightUnit] = useState<WeightUnit>('gram');
@@ -103,22 +107,13 @@ export const ShippingRateSection: React.FC = () => {
     setErrorMessage(null);
     setInfoMessage(null);
 
-    const origin = originPostalCode.trim();
+    const origin = originPostalCode.trim() || STORE_ORIGIN_POSTAL_CODE;
     const destination = destinationPostalCode.trim();
     const parsedWeight = parseFloat(weightInput);
 
     // Client-side validations
-    if (!origin) {
-      setErrorMessage('Silakan masukkan kode pos asal.');
-      return;
-    }
-    if (origin.length !== 5) {
-      setErrorMessage('Kode pos asal harus terdiri dari 5 digit angka.');
-      return;
-    }
-
     if (!destination) {
-      setErrorMessage('Silakan masukkan kode pos tujuan.');
+      setErrorMessage('Silakan masukkan kode pos tujuan pengiriman Anda.');
       return;
     }
     if (destination.length !== 5) {
@@ -222,7 +217,7 @@ export const ShippingRateSection: React.FC = () => {
             </span>
           </h2>
           <p className="text-slate-300 text-sm sm:text-base leading-relaxed">
-            Hitung dan bandingkan perkiraan ongkos kirim J&T Express dan TIKI berdasarkan asal, tujuan, dan berat paket.
+            Hitung dan bandingkan perkiraan ongkos kirim resmi dari Farm Molly kami ke lokasi Anda menggunakan J&T Express dan TIKI.
           </p>
         </div>
 
@@ -277,21 +272,26 @@ export const ShippingRateSection: React.FC = () => {
                 })}
               </div>
               <p className="text-[11px] text-slate-400">
-                Pilih salah satu atau kedua kurir untuk membandingkan tarif termurah.
+                Pilih salah satu atau kedua kurir untuk membandingkan tarif pengiriman terbaik.
               </p>
             </div>
 
             {/* Input Fields Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               
-              {/* Field 1: Kode Pos Asal */}
+              {/* Field 1: Kode Pos Asal Pengiriman (Fixed / Readonly Toko) */}
               <div className="space-y-2">
-                <label
-                  htmlFor="originPostalCode"
-                  className="block text-xs font-bold uppercase tracking-wider text-slate-200"
-                >
-                  Kode Pos Asal <span className="text-red-400">*</span>
-                </label>
+                <div className="flex items-center justify-between">
+                  <label
+                    htmlFor="originPostalCode"
+                    className="block text-xs font-bold uppercase tracking-wider text-slate-200"
+                  >
+                    Kode Pos Asal Pengiriman
+                  </label>
+                  <span className="inline-flex items-center gap-1 text-[10px] font-semibold text-cyan-400 bg-cyan-950/70 border border-cyan-800/40 px-2 py-0.5 rounded-full">
+                    <Lock className="w-2.5 h-2.5" /> Toko
+                  </span>
+                </div>
                 <div className="relative">
                   <div className="absolute inset-y-0 left-0 pl-3.5 flex items-center pointer-events-none text-slate-400">
                     <MapPin className="w-4 h-4 text-cyan-400" />
@@ -299,23 +299,17 @@ export const ShippingRateSection: React.FC = () => {
                   <input
                     id="originPostalCode"
                     type="text"
-                    inputMode="numeric"
-                    pattern="[0-9]*"
-                    maxLength={5}
-                    placeholder="Contoh: 40135"
+                    readOnly
                     value={originPostalCode}
-                    onChange={(e) =>
-                      handlePostalCodeChange(e.target.value, setOriginPostalCode)
-                    }
-                    className="w-full pl-10 pr-4 py-3 bg-[#070d1e] border border-cyan-900/60 rounded-xl text-white placeholder-slate-500 text-sm focus:outline-none focus:ring-2 focus:ring-cyan-400 focus:border-transparent transition-all"
+                    className="w-full pl-10 pr-4 py-3 bg-[#050a17] border border-cyan-900/40 rounded-xl text-cyan-300 font-bold text-sm select-none cursor-default focus:outline-none"
                   />
                 </div>
-                <p className="text-[11px] text-slate-400">
-                  5 digit kode pos lokasi pengirim
+                <p className="text-[11px] text-slate-400 flex items-center gap-1">
+                  <span>{STORE_LOCATION_LABEL}</span>
                 </p>
               </div>
 
-              {/* Field 2: Kode Pos Tujuan */}
+              {/* Field 2: Kode Pos Tujuan (Input Pelanggan) */}
               <div className="space-y-2">
                 <label
                   htmlFor="destinationPostalCode"
@@ -345,7 +339,7 @@ export const ShippingRateSection: React.FC = () => {
                   />
                 </div>
                 <p className="text-[11px] text-slate-400">
-                  5 digit kode pos tujuan pengiriman
+                  Masukkan 5 digit kode pos lokasi Anda
                 </p>
               </div>
 
@@ -367,7 +361,7 @@ export const ShippingRateSection: React.FC = () => {
                       type="number"
                       min={weightUnit === 'kg' ? '0.1' : '1'}
                       step={weightUnit === 'kg' ? '0.1' : '1'}
-                      placeholder={weightUnit === 'kg' ? '2' : '2000'}
+                      placeholder={weightUnit === 'kg' ? '1' : '1000'}
                       value={weightInput}
                       onChange={(e) => {
                         setWeightInput(e.target.value);
@@ -485,7 +479,7 @@ export const ShippingRateSection: React.FC = () => {
                     Hasil Perkiraan Ongkos Kirim
                   </h4>
                   <p className="text-xs text-slate-400">
-                    Rute: Kode Pos {originPostalCode} &rarr; {destinationPostalCode}{' '}
+                    Rute: Kediri ({originPostalCode}) &rarr; {destinationPostalCode}{' '}
                     &bull; Berat:{' '}
                     {weightUnit === 'gram'
                       ? `${weightInput} gram`
@@ -617,7 +611,7 @@ export const ShippingRateSection: React.FC = () => {
                             href={`https://wa.me/6289685472865?text=${encodeURIComponent(
                               `Halo Molly Cantik Farm, saya ingin pesan ikan Molly dengan pengiriman ${courierDisplayName} ${
                                 rate.service_name
-                              } (${originPostalCode} -> ${destinationPostalCode}, berat ${weightInput} ${weightUnit}, estimasi tarif ${priceFormatted}). Mohon info stok & totalnya.`
+                              } (Kediri [${originPostalCode}] -> ${destinationPostalCode}, berat ${weightInput} ${weightUnit}, estimasi tarif ${priceFormatted}). Mohon info ketersediaan stok & totalnya.`
                             )}`}
                             target="_blank"
                             rel="noopener noreferrer"
