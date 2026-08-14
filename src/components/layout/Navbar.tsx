@@ -12,6 +12,7 @@ export const Navbar: React.FC = () => {
     { name: 'Tentang Kami', href: '#about' },
     { name: 'Koleksi Molly', href: '#gallery' },
     { name: 'Keunggulan', href: '#advantages' },
+    { name: 'Cek Ongkir', href: '#shipping-rate' },
     { name: 'Kontak & Lokasi', href: '#contact' },
   ];
 

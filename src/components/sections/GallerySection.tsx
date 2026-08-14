@@ -5,7 +5,7 @@ import { FISH_COLLECTION } from '@/data/fishData';
 import { FishItem, FishCategory } from '@/types/fish';
 import { FishCard } from '@/components/gallery/FishCard';
 import { FishDetailModal } from '@/components/gallery/FishDetailModal';
-import { Search, Filter, Layers, Sparkles } from 'lucide-react';
+import { Search, Filter, Layers } from 'lucide-react';
 
 export const GallerySection: React.FC = () => {
   const [selectedCategory, setSelectedCategory] = useState<FishCategory>('Semua');

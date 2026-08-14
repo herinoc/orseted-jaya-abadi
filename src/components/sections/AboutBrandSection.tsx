@@ -1,5 +1,5 @@
 import React from 'react';
-import { ShieldCheck, Sparkles, CheckCircle2, Droplets, HeartPulse, Waves } from 'lucide-react';
+import { ShieldCheck, Sparkles, Droplets, HeartPulse, Waves } from 'lucide-react';
 
 export const AboutBrandSection: React.FC = () => {
   return (

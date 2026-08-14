@@ -1,5 +1,4 @@
 import React from 'react';
-import Image from 'next/image';
 import { Sparkles, MessageCircle, ArrowRight, ShieldCheck, HeartPulse, Droplets, CheckCircle } from 'lucide-react';
 
 export const HeroSection: React.FC = () => {

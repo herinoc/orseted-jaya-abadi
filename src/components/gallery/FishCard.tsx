@@ -3,7 +3,7 @@
 import React from 'react';
 import Image from 'next/image';
 import { FishItem } from '@/types/fish';
-import { Sparkles, Eye, Tag, HeartPulse, ShieldCheck } from 'lucide-react';
+import { Sparkles, Eye, Tag, ShieldCheck } from 'lucide-react';
 
 interface FishCardProps {
   fish: FishItem;

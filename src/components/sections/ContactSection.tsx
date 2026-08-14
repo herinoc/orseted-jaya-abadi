@@ -1,5 +1,5 @@
 import React from 'react';
-import { MessageCircle, MapPin, Truck, ShieldCheck, Phone, ExternalLink, Clock } from 'lucide-react';
+import { MessageCircle, MapPin, Truck, ShieldCheck, Phone, ExternalLink } from 'lucide-react';
 
 export const ContactSection: React.FC = () => {
   return (

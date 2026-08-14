@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { FISH_COLLECTION } from '@/data/fishData';
 import { FishItem } from '@/types/fish';
 import { FishDetailModal } from '@/components/gallery/FishDetailModal';
-import { Sparkles, ArrowRight, ShieldCheck, HeartPulse } from 'lucide-react';
+import { Sparkles, ArrowRight, ShieldCheck } from 'lucide-react';
 
 export const FeaturedSection: React.FC = () => {
   const featuredFish = FISH_COLLECTION.filter((f) => f.featured);
